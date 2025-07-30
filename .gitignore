@@ -48,6 +48,14 @@ firebase-debug.*.log
 .env.test.local
 .env.production.local
 
+# Vercel
+.vercel
+*.vercel.json.bak
+
+# Build outputs
+dist/
+build/
+
 # Temporary folders
 tmp/
 temp/
