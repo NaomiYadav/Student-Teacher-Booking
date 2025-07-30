@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Admin - Quick Setup</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 80vh;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+        }
+        h1 { text-align: center; margin-bottom: 30px; }
+        button {
+            background: #4CAF50;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            margin: 10px 0;
+        }
+        button:hover { background: #45a049; }
+        .status {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-weight: bold;
+        }
+        .success {
+            background: rgba(76, 175, 80, 0.3);
+            border-left: 5px solid #4CAF50;
+        }
+        .info {
+            background: rgba(33, 150, 243, 0.3);
+            border-left: 5px solid #2196F3;
+        }
+        .credentials {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🛠️ Quick Admin Setup</h1>
+        
+        <div id="status" class="status info">
+            Click the button below to create an admin account instantly!
+        </div>
+        
+        <div class="credentials">
+            <strong>Admin Credentials:</strong><br>
+            📧 Email: admin@university.edu<br>
+            🔐 Password: admin123<br>
+            👨‍💼 Role: Admin
+        </div>
+        
+        <button onclick="createAdmin()">✨ Create Admin Account Now</button>
+        <button onclick="goToApp()">🚀 Go to Main App</button>
+        
+        <div class="status info">
+            <strong>Next Steps:</strong><br>
+            1. Create admin account ✨<br>
+            2. Go to main app 🚀<br>
+            3. Login as admin 👨‍💼<br>
+            4. Approve pending teachers ✅
+        </div>
+    </div>
+
+    <script>
+        function createAdmin() {
+            const statusDiv = document.getElementById('status');
+            statusDiv.className = 'status info';
+            statusDiv.innerHTML = '⏳ Creating admin account...';
+            
+            try {
+                // Create admin data
+                const adminData = {
+                    uid: 'admin-' + Date.now(),
+                    name: 'System Administrator',
+                    email: 'admin@university.edu',
+                    password: 'admin123',
+                    role: 'admin',
+                    createdAt: new Date().toISOString(),
+                    status: 'approved'
+                };
+                
+                // Get existing users from localStorage
+                let users = [];
+                try {
+                    users = JSON.parse(localStorage.getItem('mockUsers') || '[]');
+                } catch (e) {
+                    users = [];
+                }
+                
+                // Check if admin already exists
+                const existingAdmin = users.find(u => u.email === 'admin@university.edu' && u.role === 'admin');
+                
+                if (existingAdmin) {
+                    statusDiv.className = 'status success';
+                    statusDiv.innerHTML = '✅ Admin account already exists!<br>You can login with the credentials above.';
+                } else {
+                    // Add admin to users
+                    users.push(adminData);
+                    localStorage.setItem('mockUsers', JSON.stringify(users));
+                    
+                    statusDiv.className = 'status success';
+                    statusDiv.innerHTML = `
+                        ✅ <strong>Admin account created successfully!</strong><br><br>
+                        📧 Email: admin@university.edu<br>
+                        🔐 Password: admin123<br>
+                        👨‍💼 Role: Admin<br><br>
+                        <strong>Now you can:</strong><br>
+                        1. Go to main app<br>
+                        2. Login with these credentials<br>
+                        3. Approve pending teacher registrations! 🎉
+                    `;
+                }
+                
+                console.log('Admin account created/verified:', adminData);
+                
+            } catch (error) {
+                console.error('Error creating admin:', error);
+                statusDiv.className = 'status error';
+                statusDiv.innerHTML = `❌ Error: ${error.message}. Please try again.`;
+            }
+        }
+        
+        function goToApp() {
+            window.location.href = 'index.html';
+        }
+        
+        // Auto-create admin on page load for convenience
+        setTimeout(() => {
+            createAdmin();
+        }, 1000);
+    </script>
+</body>
+</html>

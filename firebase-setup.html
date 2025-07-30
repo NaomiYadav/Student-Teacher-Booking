@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Setup Helper</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+        }
+        .step {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 10px;
+            border-left: 5px solid #4CAF50;
+        }
+        .error-fix {
+            background: rgba(244, 67, 54, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 5px solid #f44336;
+            margin: 10px 0;
+        }
+        .config-input {
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 10px;
+            border-radius: 5px;
+            width: 100%;
+            margin: 5px 0;
+            font-family: monospace;
+        }
+        .config-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 5px;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        .warning {
+            background: rgba(255, 193, 7, 0.3);
+            border-left: 5px solid #ffc107;
+        }
+        code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        .success {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        .error {
+            color: #f44336;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Firebase Setup Helper</h1>
+        <div class="error-fix">
+            <h3>❌ Current Error Detected</h3>
+            <p><strong>Error:</strong> <code>auth/api-key-not-valid</code></p>
+            <p><strong>Cause:</strong> Firebase configuration using placeholder values</p>
+            <p><strong>Status:</strong> <span class="error">❌ Configuration needed</span></p>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>📋 Quick Setup Steps</h2>
+        
+        <div class="step">
+            <h3>Step 1: Create Firebase Project</h3>
+            <p>1. Go to <a href="https://console.firebase.google.com" target="_blank" style="color: #81C784;">Firebase Console</a></p>
+            <p>2. Click "Create a project" or "Add project"</p>
+            <p>3. Name it: <code>student-teacher-booking</code></p>
+            <p>4. Continue with default settings</p>
+        </div>
+
+        <div class="step">
+            <h3>Step 2: Enable Authentication</h3>
+            <p>1. In your Firebase project, go to <strong>Authentication</strong></p>
+            <p>2. Click <strong>Sign-in method</strong> tab</p>
+            <p>3. Click <strong>Email/Password</strong></p>
+            <p>4. Enable it and save</p>
+        </div>
+
+        <div class="step">
+            <h3>Step 3: Enable Firestore Database</h3>
+            <p>1. Go to <strong>Firestore Database</strong></p>
+            <p>2. Click <strong>Create database</strong></p>
+            <p>3. Choose <strong>Start in test mode</strong></p>
+            <p>4. Select your preferred location</p>
+        </div>
+
+        <div class="step">
+            <h3>Step 4: Get Configuration</h3>
+            <p>1. Go to <strong>Project Settings</strong> (gear icon)</p>
+            <p>2. Scroll to <strong>"Your apps"</strong> section</p>
+            <p>3. Click <strong>Add app</strong> → Select <strong>Web</strong> (&lt;/&gt;)</p>
+            <p>4. Register app with nickname: <code>student-teacher-app</code></p>
+            <p>5. Copy the <code>firebaseConfig</code> object</p>
+        </div>
+
+        <div class="step">
+            <h3>Step 5: Update Configuration</h3>
+            <p>Replace the values in <code>js/firebase-config.js</code>:</p>
+            
+            <div style="margin: 15px 0;">
+                <label>API Key:</label>
+                <input type="text" class="config-input" id="apiKey" placeholder="AIzaSyD...">
+            </div>
+            
+            <div style="margin: 15px 0;">
+                <label>Project ID:</label>
+                <input type="text" class="config-input" id="projectId" placeholder="your-project-name-12345">
+            </div>
+            
+            <div style="margin: 15px 0;">
+                <label>App ID:</label>
+                <input type="text" class="config-input" id="appId" placeholder="1:123456789:web:abc123...">
+            </div>
+
+            <button onclick="generateConfig()">Generate Configuration</button>
+            <button onclick="copyToClipboard()">Copy to Clipboard</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <h3>📄 Generated Configuration</h3>
+        <p>Copy this and replace the content in <code>js/firebase-config.js</code>:</p>
+        <textarea id="generatedConfig" readonly style="width: 100%; height: 200px; background: rgba(0,0,0,0.3); color: white; border: 1px solid rgba(255,255,255,0.3); border-radius: 5px; padding: 15px; font-family: monospace;"></textarea>
+    </div>
+
+    <div class="container">
+        <h2>🚀 After Setup</h2>
+        <div class="step warning">
+            <p><strong>⚠️ Important:</strong> After updating the configuration:</p>
+            <ol>
+                <li>Save the <code>firebase-config.js</code> file</li>
+                <li>Refresh your browser</li>
+                <li>Try registering again</li>
+                <li>Check browser console for any remaining errors</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        function generateConfig() {
+            const apiKey = document.getElementById('apiKey').value.trim();
+            const projectId = document.getElementById('projectId').value.trim();
+            const appId = document.getElementById('appId').value.trim();
+            
+            if (!apiKey || !projectId || !appId) {
+                alert('Please fill in all required fields (API Key, Project ID, App ID)');
+                return;
+            }
+            
+            const config = `// Firebase Configuration
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+import { getAuth } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+import { getFirestore } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+// Your Firebase configuration
+const firebaseConfig = {
+    apiKey: "${apiKey}",
+    authDomain: "${projectId}.firebaseapp.com",
+    projectId: "${projectId}",
+    storageBucket: "${projectId}.appspot.com",
+    messagingSenderId: "123456789", // Update with your actual sender ID
+    appId: "${appId}"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+// Initialize Firebase Authentication and get a reference to the service
+export const auth = getAuth(app);
+
+// Initialize Cloud Firestore and get a reference to the service
+export const db = getFirestore(app);
+
+// Export the app for use in other modules
+export default app;`;
+            
+            document.getElementById('generatedConfig').value = config;
+        }
+        
+        function copyToClipboard() {
+            const config = document.getElementById('generatedConfig');
+            if (config.value.trim() === '') {
+                alert('Please generate configuration first');
+                return;
+            }
+            
+            config.select();
+            document.execCommand('copy');
+            alert('Configuration copied to clipboard! Now paste it into js/firebase-config.js');
+        }
+        
+        // Auto-generate basic template
+        window.onload = function() {
+            document.getElementById('generatedConfig').value = `// Firebase Configuration Template
+// 
+// 1. Get your values from Firebase Console:
+//    - Go to Project Settings → Your apps → Web app
+// 2. Fill in the form above with your actual values
+// 3. Click "Generate Configuration"
+// 4. Copy and paste into js/firebase-config.js
+
+const firebaseConfig = {
+    apiKey: "YOUR_API_KEY_HERE",
+    authDomain: "YOUR_PROJECT_ID.firebaseapp.com", 
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT_ID.appspot.com",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
+};`;
+        };
+    </script>
+</body>
+</html>

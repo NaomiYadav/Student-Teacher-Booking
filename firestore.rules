@@ -1,0 +1,97 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+    
+    function getUserData() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+    
+    function hasRole(role) {
+      return isAuthenticated() && getUserData().role == role;
+    }
+    
+    function isApprovedTeacher() {
+      return hasRole('teacher') && getUserData().status == 'approved';
+    }
+    
+    function isAdmin() {
+      return hasRole('admin');
+    }
+    
+    function isStudent() {
+      return hasRole('student');
+    }
+    
+    // Users collection
+    match /users/{userId} {
+      // Users can read and write their own data
+      allow read, write: if isAuthenticated() && isOwner(userId);
+      
+      // Approved teachers can be read by students for booking
+      allow read: if isAuthenticated() && 
+                     resource.data.role == 'teacher' && 
+                     resource.data.status == 'approved';
+      
+      // Admins can read and write all user data
+      allow read, write: if isAuthenticated() && isAdmin();
+      
+      // Allow user creation during registration
+      allow create: if request.auth != null;
+    }
+    
+    // Appointments collection
+    match /appointments/{appointmentId} {
+      // Users can read/write appointments they're involved in
+      allow read, write: if isAuthenticated() && 
+                           (isOwner(resource.data.studentId) || 
+                            isOwner(resource.data.teacherId));
+      
+      // Students can create appointments
+      allow create: if isAuthenticated() && 
+                       isStudent() && 
+                       isOwner(request.resource.data.studentId);
+      
+      // Admins can read all appointments
+      allow read: if isAuthenticated() && isAdmin();
+    }
+    
+    // Messages collection
+    match /messages/{messageId} {
+      // Users can read/write messages they're involved in
+      allow read, write: if isAuthenticated() && 
+                           (isOwner(resource.data.senderId) || 
+                            isOwner(resource.data.receiverId));
+      
+      // Users can create messages they're sending
+      allow create: if isAuthenticated() && 
+                       isOwner(request.resource.data.senderId);
+    }
+    
+    // Logs collection
+    match /logs/{logId} {
+      // Any authenticated user can write logs
+      allow write: if isAuthenticated();
+      
+      // Only admins can read logs
+      allow read: if isAuthenticated() && isAdmin();
+    }
+    
+    // System settings (admin only)
+    match /settings/{document=**} {
+      allow read, write: if isAuthenticated() && isAdmin();
+    }
+    
+    // Analytics data (admin only)
+    match /analytics/{document=**} {
+      allow read, write: if isAuthenticated() && isAdmin();
+    }
+  }
+}

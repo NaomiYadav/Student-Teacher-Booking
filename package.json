@@ -1,0 +1,51 @@
+{
+  "name": "student-teacher-booking-system",
+  "version": "1.0.0",
+  "description": "A comprehensive web-based appointment booking system for students and teachers",
+  "main": "index.html",
+  "scripts": {
+    "start": "live-server --port=3000 --host=localhost",
+    "build": "echo 'No build process needed for vanilla JS'",
+    "test": "echo 'Tests can be run manually or with testing frameworks'",
+    "lint": "eslint js/*.js",
+    "lint:fix": "eslint js/*.js --fix",
+    "deploy": "firebase deploy",
+    "serve": "firebase serve",
+    "firebase:init": "firebase init",
+    "firebase:login": "firebase login"
+  },
+  "keywords": [
+    "education",
+    "appointment-booking",
+    "student-teacher",
+    "firebase",
+    "javascript",
+    "html",
+    "css",
+    "web-application"
+  ],
+  "author": "Your Name <your.email@example.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/Student-Teacher-Booking-.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/Student-Teacher-Booking-/issues"
+  },
+  "homepage": "https://github.com/yourusername/Student-Teacher-Booking-#readme",
+  "devDependencies": {
+    "eslint": "^8.0.0",
+    "live-server": "^1.2.2",
+    "firebase-tools": "^12.0.0"
+  },
+  "dependencies": {},
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}

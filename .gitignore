@@ -1,0 +1,76 @@
+# Gitignore file for Student-Teacher Booking System
+
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+logs
+*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# Firebase
+.firebase/
+firebase-debug.log
+firebase-debug.*.log
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Temporary folders
+tmp/
+temp/
+
+# Build outputs
+build/
+dist/
+
+# Firebase emulator data
+firebase-export-*/
+
+# Backup files
+*.bak
+*.backup
+
+# Security and configuration files that should not be committed
+config/local.js
+config/development.js
+config/production.js
+
+# Test output
+test-results/
+*.xml
+
+# Cache
+.cache/

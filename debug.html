@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Registration - Student-Teacher Booking</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .debug-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .error-log {
+            background: #ffebee;
+            color: #c62828;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 10px 0;
+            border-left: 4px solid #c62828;
+        }
+        .success-log {
+            background: #e8f5e8;
+            color: #2e7d32;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 10px 0;
+            border-left: 4px solid #2e7d32;
+        }
+        .info-log {
+            background: #e3f2fd;
+            color: #1565c0;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 10px 0;
+            border-left: 4px solid #1565c0;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background: #6366f1;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #5048e5;
+        }
+        .conditional-fields {
+            display: none;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-top: 10px;
+            border-radius: 4px;
+            background: #f9f9f9;
+        }
+        .conditional-fields.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="debug-container">
+        <h1>🔧 Registration Debug Tool</h1>
+        <p>This page will help diagnose registration issues by showing detailed error messages.</p>
+        
+        <div id="debugLog"></div>
+        
+        <h2>Test Registration Form</h2>
+        <form id="debugRegisterForm">
+            <div class="form-group">
+                <label for="debugName">Full Name</label>
+                <input type="text" id="debugName" value="Test User" required>
+            </div>
+            <div class="form-group">
+                <label for="debugEmail">Email</label>
+                <input type="email" id="debugEmail" value="test@example.com" required>
+            </div>
+            <div class="form-group">
+                <label for="debugPassword">Password</label>
+                <input type="password" id="debugPassword" value="password123" required>
+            </div>
+            <div class="form-group">
+                <label for="debugRole">Role</label>
+                <select id="debugRole" required>
+                    <option value="">Select Role</option>
+                    <option value="student" selected>Student</option>
+                    <option value="teacher">Teacher</option>
+                </select>
+            </div>
+            
+            <!-- Student specific fields -->
+            <div id="debugStudentFields" class="conditional-fields active">
+                <h3>Student Information</h3>
+                <div class="form-group">
+                    <label for="debugStudentId">Student ID</label>
+                    <input type="text" id="debugStudentId" value="naomi123">
+                </div>
+                <div class="form-group">
+                    <label for="debugStudentYear">Year of Study</label>
+                    <select id="debugStudentYear">
+                        <option value="">Select Year</option>
+                        <option value="1">1st Year</option>
+                        <option value="2">2nd Year</option>
+                        <option value="3" selected>3rd Year</option>
+                        <option value="4">4th Year</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Teacher specific fields -->
+            <div id="debugTeacherFields" class="conditional-fields">
+                <h3>Teacher Information</h3>
+                <div class="form-group">
+                    <label for="debugTeacherDepartment">Department</label>
+                    <select id="debugTeacherDepartment">
+                        <option value="">Select Department</option>
+                        <option value="Computer Science">Computer Science</option>
+                        <option value="Mathematics">Mathematics</option>
+                        <option value="Physics">Physics</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="debugTeacherSubject">Subject</label>
+                    <input type="text" id="debugTeacherSubject" placeholder="e.g., Data Structures">
+                </div>
+                <div class="form-group">
+                    <label for="debugTeacherOfficeHours">Office Hours</label>
+                    <input type="text" id="debugTeacherOfficeHours" placeholder="e.g., Mon-Fri 9:00-17:00">
+                </div>
+            </div>
+
+            <button type="submit">Test Registration</button>
+            <button type="button" id="testWithoutFirebase">Test Without Firebase</button>
+        </form>
+    </div>
+
+    <div class="debug-container">
+        <h2>📋 Common Issues & Solutions</h2>
+        <div class="info-log">
+            <strong>Issue 1:</strong> Firebase not configured<br>
+            <strong>Solution:</strong> Replace placeholder values in firebase-config.js with actual Firebase project credentials
+        </div>
+        <div class="info-log">
+            <strong>Issue 2:</strong> CORS errors when testing locally<br>
+            <strong>Solution:</strong> Use a local server like Live Server extension or python -m http.server
+        </div>
+        <div class="info-log">
+            <strong>Issue 3:</strong> Required fields validation<br>
+            <strong>Solution:</strong> Make sure all role-specific fields are filled correctly
+        </div>
+    </div>
+
+    <script type="module">
+        let debugLog = document.getElementById('debugLog');
+        
+        function log(message, type = 'info') {
+            const logEntry = document.createElement('div');
+            logEntry.className = `${type}-log`;
+            logEntry.innerHTML = `<strong>[${new Date().toLocaleTimeString()}]</strong> ${message}`;
+            debugLog.appendChild(logEntry);
+            debugLog.scrollTop = debugLog.scrollHeight;
+        }
+
+        log('Debug tool initialized', 'success');
+
+        // Role change handler
+        document.getElementById('debugRole').addEventListener('change', function() {
+            const role = this.value;
+            const studentFields = document.getElementById('debugStudentFields');
+            const teacherFields = document.getElementById('debugTeacherFields');
+            
+            studentFields.classList.remove('active');
+            teacherFields.classList.remove('active');
+            
+            if (role === 'student') {
+                studentFields.classList.add('active');
+                log('Switched to student registration mode', 'info');
+            } else if (role === 'teacher') {
+                teacherFields.classList.add('active');
+                log('Switched to teacher registration mode', 'info');
+            }
+        });
+
+        // Test without Firebase button
+        document.getElementById('testWithoutFirebase').addEventListener('click', function() {
+            log('Testing form validation without Firebase...', 'info');
+            
+            const formData = {
+                name: document.getElementById('debugName').value,
+                email: document.getElementById('debugEmail').value,
+                password: document.getElementById('debugPassword').value,
+                role: document.getElementById('debugRole').value,
+                studentId: document.getElementById('debugStudentId').value,
+                studentYear: document.getElementById('debugStudentYear').value
+            };
+            
+            // Validate data
+            let isValid = true;
+            
+            if (!formData.name) {
+                log('❌ Name is required', 'error');
+                isValid = false;
+            }
+            if (!formData.email) {
+                log('❌ Email is required', 'error');
+                isValid = false;
+            }
+            if (!formData.password) {
+                log('❌ Password is required', 'error');
+                isValid = false;
+            }
+            if (formData.password.length < 6) {
+                log('❌ Password must be at least 6 characters', 'error');
+                isValid = false;
+            }
+            if (!formData.role) {
+                log('❌ Role is required', 'error');
+                isValid = false;
+            }
+            if (formData.role === 'student' && (!formData.studentId || !formData.studentYear)) {
+                log('❌ Student ID and Year are required for students', 'error');
+                isValid = false;
+            }
+            
+            if (isValid) {
+                log('✅ Form validation passed! Data looks good:', 'success');
+                log(`Name: ${formData.name}`, 'info');
+                log(`Email: ${formData.email}`, 'info');
+                log(`Role: ${formData.role}`, 'info');
+                if (formData.role === 'student') {
+                    log(`Student ID: ${formData.studentId}`, 'info');
+                    log(`Year: ${formData.studentYear}`, 'info');
+                }
+            }
+        });
+
+        // Test with Firebase
+        document.getElementById('debugRegisterForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            log('Testing with Firebase...', 'info');
+            
+            try {
+                // Try to import Firebase modules
+                log('Attempting to load Firebase modules...', 'info');
+                
+                const { auth, db } = await import('./js/firebase-config.js');
+                log('✅ Firebase modules loaded successfully', 'success');
+                
+                const { createUserWithEmailAndPassword } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js');
+                const { doc, setDoc } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
+                log('✅ Firebase Auth and Firestore modules loaded', 'success');
+                
+                // Get form data
+                const formData = {
+                    name: document.getElementById('debugName').value,
+                    email: document.getElementById('debugEmail').value,
+                    password: document.getElementById('debugPassword').value,
+                    role: document.getElementById('debugRole').value,
+                    studentId: document.getElementById('debugStudentId').value,
+                    studentYear: document.getElementById('debugStudentYear').value
+                };
+                
+                log('Attempting to create user account...', 'info');
+                
+                // Try to create user
+                const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
+                const user = userCredential.user;
+                
+                log(`✅ User account created! UID: ${user.uid}`, 'success');
+                
+                // Try to save user data
+                const userData = {
+                    uid: user.uid,
+                    name: formData.name,
+                    email: formData.email,
+                    role: formData.role,
+                    createdAt: new Date().toISOString(),
+                    status: 'approved'
+                };
+                
+                if (formData.role === 'student') {
+                    userData.studentId = formData.studentId;
+                    userData.yearOfStudy = formData.studentYear;
+                }
+                
+                await setDoc(doc(db, 'users', user.uid), userData);
+                log('✅ User data saved to Firestore successfully!', 'success');
+                log('🎉 Registration completed successfully!', 'success');
+                
+            } catch (error) {
+                log(`❌ Firebase Error: ${error.message}`, 'error');
+                log(`Error Code: ${error.code || 'Unknown'}`, 'error');
+                
+                if (error.message.includes('Firebase') || error.message.includes('auth') || error.message.includes('firestore')) {
+                    log('💡 This looks like a Firebase configuration issue. Check firebase-config.js', 'info');
+                } else if (error.message.includes('CORS') || error.message.includes('network')) {
+                    log('💡 This looks like a network/CORS issue. Try using a local server', 'info');
+                } else {
+                    log('💡 This might be a validation or authentication issue', 'info');
+                }
+            }
+        });
+
+        log('Ready to test registration! Try both buttons above.', 'info');
+    </script>
+</body>
+</html>

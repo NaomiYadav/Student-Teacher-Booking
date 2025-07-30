@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f0f0f0;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <h1>🔧 Button Test Page</h1>
+    
+    <div class="test-section">
+        <h2>Button Click Test</h2>
+        <button id="testBtn1">Test Button 1</button>
+        <button id="testBtn2">Test Button 2</button>
+        <div id="output"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Main App Links</h2>
+        <button onclick="goToMainApp()">Go to Main App</button>
+        <button onclick="testMainAppButtons()">Test Main App Elements</button>
+    </div>
+
+    <script>
+        console.log('🔧 Test page loaded');
+        
+        // Test basic button functionality
+        document.getElementById('testBtn1').addEventListener('click', function() {
+            console.log('✅ Test Button 1 clicked');
+            document.getElementById('output').innerHTML += '<p>✅ Test Button 1 works!</p>';
+        });
+        
+        document.getElementById('testBtn2').addEventListener('click', function() {
+            console.log('✅ Test Button 2 clicked');
+            document.getElementById('output').innerHTML += '<p>✅ Test Button 2 works!</p>';
+        });
+        
+        function goToMainApp() {
+            window.location.href = 'index.html';
+        }
+        
+        function testMainAppButtons() {
+            // Open main app in new window and test
+            const mainApp = window.open('index.html', '_blank');
+            
+            setTimeout(() => {
+                try {
+                    const loginBtn = mainApp.document.getElementById('loginBtn');
+                    const registerBtn = mainApp.document.getElementById('registerBtn');
+                    
+                    console.log('Main app login button:', loginBtn);
+                    console.log('Main app register button:', registerBtn);
+                    
+                    if (loginBtn) {
+                        console.log('✅ Login button found in main app');
+                    } else {
+                        console.log('❌ Login button NOT found in main app');
+                    }
+                    
+                    if (registerBtn) {
+                        console.log('✅ Register button found in main app');
+                    } else {
+                        console.log('❌ Register button NOT found in main app');
+                    }
+                } catch (error) {
+                    console.log('❌ Error accessing main app:', error);
+                }
+            }, 2000);
+        }
+        
+        // Make functions global
+        window.goToMainApp = goToMainApp;
+        window.testMainAppButtons = testMainAppButtons;
+    </script>
+</body>
+</html>

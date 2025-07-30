@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Setup - Student-Teacher Booking System</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🚀 Demo Setup Guide</h1>
+        </header>
+        
+        <div class="dashboard">
+            <h2>Firebase Configuration Required</h2>
+            <p>To run this application, you need to configure Firebase:</p>
+            
+            <ol>
+                <li><strong>Create a Firebase Project:</strong>
+                    <ul>
+                        <li>Go to <a href="https://console.firebase.google.com/" target="_blank">Firebase Console</a></li>
+                        <li>Click "Create a project"</li>
+                        <li>Follow the setup wizard</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Enable Services:</strong>
+                    <ul>
+                        <li>Enable Authentication (Email/Password method)</li>
+                        <li>Create a Firestore database in test mode</li>
+                        <li>Enable Firebase Hosting</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Get Configuration:</strong>
+                    <ul>
+                        <li>Go to Project Settings > General</li>
+                        <li>Scroll down to "Your apps"</li>
+                        <li>Click "Add app" > Web app</li>
+                        <li>Copy the Firebase configuration object</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Update Configuration:</strong>
+                    <ul>
+                        <li>Open <code>js/firebase-config.js</code></li>
+                        <li>Replace the placeholder config with your Firebase config</li>
+                        <li>Save the file</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Deploy or Run Locally:</strong>
+                    <ul>
+                        <li>For local development: Use a local server (Live Server extension in VS Code)</li>
+                        <li>For production: Run <code>firebase deploy</code></li>
+                    </ul>
+                </li>
+            </ol>
+            
+            <h3>🔧 Development Tools</h3>
+            <ul>
+                <li><strong>VS Code Extensions:</strong> Live Server, Firebase</li>
+                <li><strong>Browser:</strong> Chrome with Developer Tools</li>
+                <li><strong>Firebase CLI:</strong> <code>npm install -g firebase-tools</code></li>
+            </ul>
+            
+            <h3>📱 Test Accounts</h3>
+            <p>After setup, create test accounts for different roles:</p>
+            <ul>
+                <li><strong>Student:</strong> student@test.com</li>
+                <li><strong>Teacher:</strong> teacher@test.com</li>
+                <li><strong>Admin:</strong> admin@test.com (requires manual role assignment)</li>
+            </ul>
+            
+            <h3>🎯 Demo Features</h3>
+            <div class="grid grid-3">
+                <div class="card">
+                    <h4>👨‍🎓 Student Features</h4>
+                    <ul>
+                        <li>Search teachers by department</li>
+                        <li>Book appointments with teachers</li>
+                        <li>Send messages to teachers</li>
+                        <li>View appointment history</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <h4>👨‍🏫 Teacher Features</h4>
+                    <ul>
+                        <li>Manage appointment requests</li>
+                        <li>Approve/cancel appointments</li>
+                        <li>View student messages</li>
+                        <li>Set availability schedule</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <h4>🛡️ Admin Features</h4>
+                    <ul>
+                        <li>Approve teacher registrations</li>
+                        <li>Manage all users</li>
+                        <li>View system analytics</li>
+                        <li>Download system logs</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 2rem;">
+                <button class="btn btn-primary" onclick="window.location.href='index.html'">
+                    Continue to Application →
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
