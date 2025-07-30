@@ -13,7 +13,6 @@
       "dest": "/$1"
     }
   ],
-  "functions": {},
   "headers": [
     {
       "source": "/(.*)",
